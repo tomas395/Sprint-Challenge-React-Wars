@@ -1,42 +1,37 @@
-import React from 'react';
-import './App.css';
+import React, { useState, useEffect } from "react";
+import "./App.css";
 import axios from "axios";
-import React, { useState, useEffect } from 'react';
-import styled from 'styled-components';
+import Characters from "./components/Characters";
+import styled from "styled-components";
 
-// Try to think through what state you'll need for this app before starting. Then build out
-  // the state properties here.
-
-  // Fetch characters from the star wars api in an effect hook. Remember, anytime you have a 
-  // side effect in a component, you want to think about which state and/or props it should
-  // sync up with, if any.
-
+const SwContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  flex-wrap: nowrap;
+`;
 const App = () => {
-
-const [chars, setChars] = useState([]);
+  const [chars, setChars] = useState([]);
 
   useEffect(() => {
     axios
-      .get(
-        ("https://swapi.co/api/people/")
-      
-      .then(res => {
-        console.log("Fetched!", res);
-        setChars(res.data);
-      })
-      .catch(err => {
-        console.log("Error: The data was not returned!", err);
-      });
-  }, []);
+      .get("https://swapi.co/api/people/")
 
-  
+      .then(res => {
+        setChars(res.data.results);
+      })
+      .catch(err => console.log("Error: The data was not returned!", err));
+  }, []);
 
   return (
     <div className="App">
       <h1 className="Header">React Wars</h1>
+      <SwContainer>
+        {chars.map(chars => (
+          <Characters props={chars} />
+        ))}
+      </SwContainer>
     </div>
   );
-}
-
+};
 
 export default App;

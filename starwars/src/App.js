@@ -17,6 +17,7 @@ const App = () => {
       .get("https://swapi.co/api/people/")
 
       .then(res => {
+        console.log("Fetched!", res);
         setChars(res.data.results);
       })
       .catch(err => console.log("Error: The data was not returned!", err));
